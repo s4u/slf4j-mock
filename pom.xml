@@ -31,6 +31,8 @@
     <name>SLF4J mock</name>
 
     <description>Library to easy mock request on sl4j-api</description>
+    <url>https://github.com/s4u/slf4j-mock</url>
+    <inceptionYear>2020</inceptionYear>
 
     <licenses>
         <license>

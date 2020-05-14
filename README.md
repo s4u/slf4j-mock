@@ -1,4 +1,8 @@
 # SLF4J mock
+[![Build Status](https://travis-ci.com/s4u/slf4j-mock.svg?branch=master)](https://travis-ci.com/s4u/slf4j-mock)
+[![verify](https://github.com/s4u/slf4j-mock/workflows/verify/badge.svg)](https://github.com/s4u/slf4j-mock/actions?query=workflow%3Averify)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=org.simplify4u%3Aslf4j-mock&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.simplify4u%3Aslf4j-mock)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=org.simplify4u%3Aslf4j-mock&metric=ncloc)](https://sonarcloud.io/dashboard?id=org.simplify4u%3Aslf4j-mock)
 
 Yet another way to testing logging in application which use SLF4J.
 
