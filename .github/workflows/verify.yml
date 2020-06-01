@@ -2,8 +2,8 @@ name: verify
 
 on:
   push:
-    branches:
-      - 'master'
+    branches-ignore:
+      - 'dependabot/**'
     tags:
 
   pull_request:
@@ -12,7 +12,7 @@ on:
     tags:
 
   schedule:
-    - cron: '22 22 */16 * *'
+    - cron: '22 12 */16 * *'
 
 jobs:
   build:
