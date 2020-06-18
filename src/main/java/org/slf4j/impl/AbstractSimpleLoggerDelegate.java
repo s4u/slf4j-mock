@@ -21,6 +21,8 @@ package org.slf4j.impl;
  */
 public abstract class AbstractSimpleLoggerDelegate extends SimpleLogger {
 
+    private static final long serialVersionUID = -801568980283201312L;
+
     static {
         SimpleLogger.lazyInit();
     }

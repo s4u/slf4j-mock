@@ -36,7 +36,7 @@ so we must clear invocation on created mocks before each test:
         LoggerMock.clearInvocations();
     }
 
-And write test:
+write test:
 
     @Test
     public void logInfoShouldBeLogged() {

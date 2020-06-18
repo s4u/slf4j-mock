@@ -21,6 +21,9 @@ import org.slf4j.impl.AbstractSimpleLoggerDelegate;
  * Access to SLF4J SimpleLogger by own implementation.
  */
 class SimpleLogger extends AbstractSimpleLoggerDelegate {
+
+    private static final long serialVersionUID = -1050011592280122282L;
+
     SimpleLogger(String name) {
         super(name);
     }
