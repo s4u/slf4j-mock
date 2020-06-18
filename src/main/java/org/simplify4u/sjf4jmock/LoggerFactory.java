@@ -45,7 +45,7 @@ public class LoggerFactory implements ILoggerFactory {
     @SuppressWarnings("java:S1312") // Loggers should be "private static final" and should share a naming convention
     private Logger createNewLoggerMock(String name) {
 
-        LOGGER.info("Create mock for logger: {}", name);
+        LOGGER.debug("Create mock for logger: {}", name);
 
         Logger mock = mock(Logger.class);
         when(mock.getName()).thenReturn(name);
