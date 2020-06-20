@@ -29,7 +29,7 @@ public class LoggerFactory implements ILoggerFactory {
 
     private static final Logger LOGGER = new SimpleLogger(LoggerFactory.class.getName());
 
-    private Map<String, Logger> loggers = new HashMap<>();
+    private final Map<String, Logger> loggers = new HashMap<>();
 
     /**
      * New class should be create by package member only.
@@ -39,7 +39,9 @@ public class LoggerFactory implements ILoggerFactory {
 
     @Override
     public Logger getLogger(String name) {
-        return loggers.computeIfAbsent(name, this::createNewLoggerMock);
+        synchronized (loggers) {
+            return loggers.computeIfAbsent(name, this::createNewLoggerMock);
+        }
     }
 
     @SuppressWarnings("java:S1312") // Loggers should be "private static final" and should share a naming convention
@@ -56,6 +58,8 @@ public class LoggerFactory implements ILoggerFactory {
     }
 
     void clearInvocations() {
-        loggers.forEach((name, logger) -> Mockito.clearInvocations(logger));
+        synchronized (loggers) {
+            loggers.forEach((name, logger) -> Mockito.clearInvocations(logger));
+        }
     }
 }
