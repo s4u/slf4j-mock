@@ -25,7 +25,7 @@
     </parent>
 
     <artifactId>slf4j-mock</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.0.2</version>
     <name>SLF4J mock</name>
 
     <description>Library to easy mock request on sl4j-api</description>
@@ -53,7 +53,7 @@
         <connection>scm:git:git@github.com:s4u/slf4j-mock.git</connection>
         <developerConnection>${project.scm.connection}</developerConnection>
         <url>https://github.com/s4u/slf4j-mock</url>
-        <tag>HEAD</tag>
+        <tag>v1.0.2</tag>
     </scm>
 
     <properties>
