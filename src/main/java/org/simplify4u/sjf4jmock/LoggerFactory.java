@@ -20,6 +20,7 @@ import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 
 import org.mockito.Mockito;
 import org.slf4j.ILoggerFactory;
@@ -40,16 +41,15 @@ public class LoggerFactory implements ILoggerFactory {
     @Override
     public Logger getLogger(String name) {
         synchronized (loggers) {
-            return loggers.computeIfAbsent(name, this::createNewLoggerMock);
+            return loggers.computeIfAbsent(name, LoggerFactory::createNewLoggerMock);
         }
     }
 
     @SuppressWarnings("java:S1312") // Loggers should be "private static final" and should share a naming convention
-    private Logger createNewLoggerMock(String name) {
+    private static Logger createNewLoggerMock(String name) {
 
         LOGGER.debug("Create mock for logger: {}", name);
-
-        Logger mock = mock(Logger.class);
+        Logger mock = mock(Logger.class, withSettings().lenient());
         when(mock.getName()).thenReturn(name);
 
         new DelegateMockToSimpleLogger(name).delegate(mock);
