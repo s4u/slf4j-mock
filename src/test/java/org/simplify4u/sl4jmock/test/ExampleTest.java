@@ -26,9 +26,13 @@ import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.simplify4u.sjf4jmock.LoggerMock;
 import org.slf4j.Logger;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ExampleTest {
 
     private static final String INFO_TEST_MESSAGE = "info log test message";
@@ -36,12 +40,12 @@ public class ExampleTest {
     private static final String DEBUG_TEST_MESSAGE = "debug log test message";
     private static final String DEBUG_TEST_FORMAT = "Debug: {}";
 
+    @InjectMocks
     private Example sut;
 
     @Before
     public void setup() {
         LoggerMock.clearInvocations();
-        sut = new Example();
     }
 
 
