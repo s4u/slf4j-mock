@@ -56,6 +56,11 @@
         <tag>HEAD</tag>
     </scm>
 
+    <ciManagement>
+        <system>GitHub Actions</system>
+        <url>https://github.com/s4u/slf4j-mock/actions</url>
+    </ciManagement>
+
     <properties>
         <slf4j.version>1.7.30</slf4j.version>
     </properties>
