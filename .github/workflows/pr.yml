@@ -88,3 +88,4 @@ jobs:
               "sonar.pullrequest.github.repository": "${{ github.repository }}",
               "sonar.login": "${{ secrets.SONAR_TOKEN }}"
             }
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
