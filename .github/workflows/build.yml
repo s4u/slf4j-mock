@@ -74,11 +74,10 @@ jobs:
       - uses: s4u/maven-settings-action@v2.2.0
         with:
           sonatypeSnapshots: true
-          properties: '[{"sonar.login": "${env.SONAR_TOKEN}"}]'
 
       - run: mvn verify
 
-      - run: mvn sonar:sonar -Dsonar.branch.name=${GITHUB_REF#refs/heads/}
+      - run: mvn sonar:sonar
         if: github.repository_owner == 's4u'
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

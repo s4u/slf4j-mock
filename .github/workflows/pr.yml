@@ -80,12 +80,5 @@ jobs:
       - run: mvn sonar:sonar
         if: github.repository_owner == 's4u'
         env:
-          SONARQUBE_SCANNER_PARAMS: >
-            {
-              "sonar.pullrequest.key": "${{ github.event.number }}",
-              "sonar.pullrequest.base": "${{ github.event.pull_request.base.ref }}",
-              "sonar.pullrequest.branch": "${{ github.event.pull_request.head.repo.full_name }}/${{ github.event.pull_request.head.ref }}",
-              "sonar.pullrequest.github.repository": "${{ github.repository }}",
-              "sonar.login": "${{ secrets.SONAR_TOKEN }}"
-            }
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
