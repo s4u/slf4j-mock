@@ -79,7 +79,7 @@ jobs:
 
       - run: mvn verify
 
-      - run: mvn sonar:sonar
+      - run: mvn sonar:sonar -Dsonar.branch.name=${GITHUB_REF#refs/heads/}
         if: github.repository_owner == 's4u'
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
