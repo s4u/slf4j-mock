@@ -39,4 +39,4 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Action"
 
-      - run: mvn site-deploy
+      - run: mvn --no-transfer-progress site-deploy

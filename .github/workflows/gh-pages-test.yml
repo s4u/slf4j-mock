@@ -33,4 +33,4 @@ jobs:
         with:
           sonatypeSnapshots: true
 
-      - run: mvn site
+      - run: mvn --no-transfer-progress site
