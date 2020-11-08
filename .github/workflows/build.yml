@@ -74,6 +74,8 @@ jobs:
       - uses: s4u/maven-settings-action@v2.2.0
         with:
           sonatypeSnapshots: true
+          properties: '[{"sonar.login": "${env.SONAR_TOKEN}"}]'
+
 
       - run: mvn verify
 
