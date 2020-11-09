@@ -57,15 +57,11 @@ jobs:
 
       - uses: actions/cache@v2.1.3
         with:
-          path: ~/.m2/repository
+          path: |
+            ~/.m2/repository
+            ~/.sonar/cache
           key: ubuntu-latest-jdk11-${{ hashFiles('**/pom.xml') }}
           restore-keys: ubuntu-latest-jdk11-
-
-      - uses: actions/cache@v2.1.3
-        with:
-          path: ~/.sonar/cache
-          key: sonar-cache
-          restore-keys: sonar-cache
 
       - uses: actions/setup-java@v1.4.3
         with:
