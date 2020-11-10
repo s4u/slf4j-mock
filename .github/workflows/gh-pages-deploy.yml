@@ -30,7 +30,7 @@ jobs:
           properties: |
             [
               {"username": "git"},
-              {"password": "${{ secrets.GITHUB_TOKEN }}"},
+              {"password": "${{ secrets.TECH_TOKEN }}"},
               {"scmpublish.pubScmUrl": "scm:git:${{ github.event.repository.url}}"},
               {"scmpublish.dryRun": "false"}
             ]
