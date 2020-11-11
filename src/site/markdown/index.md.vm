@@ -1,0 +1,161 @@
+Introduction
+============
+
+Yet another way to testing logging in application which use `SLF4J`.
+
+Features
+--------
+
+ - this binding create `Mockito` mock for each `Logger`
+ - all call to `Logger` method are delegated to instance of `SimpleLogger`,
+   so you can create standard `simplelogger.properties` 
+ - light transitive dependencies - only `slf4j-api` and `mockito-core`
+ - ease use
+
+Contributing and helps
+----------------------
+
+Contributions are welcome!
+
+ - Give a ⭐ - if you want to encourage me to work on a [project](${project.scm.url}/stargazers)
+ - Don't hesitate create issue for a new feature you dream of or if you suspect some bug -  [new issue](${project.issueManagement.url})
+ - If my work is valuable for you can consider to a [sponsor](https://github.com/sponsors/slawekjaranowski) for me
+
+How to use
+----------
+
+First we should add `slf4j-mock` binding as dependency to our project.
+
+```
+<dependency>
+    <groupId>org.simplify4u</groupId>
+    <artifactId>slf4j-mock</artifactId>
+    <version>${project.version}<version>
+    <scope>test</scope>
+</dependency>
+```
+
+We must remember that we can have only one `SLF4J` binding on classpath, 
+so look for dependencies like `slf4j-simple`, `slf4j-log4j12`, `slf4j-jdk14	` or `slf4j-nop`
+and remove those from project when you want testing logging behavior.
+
+Now we have class which does some logging action
+
+```
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class Example {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Example.class);
+
+    public void methodWithLogDebug(String format, String args) {
+
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(format, args);
+        }
+    }
+
+    public void methodWithLogWarn(String message) {
+        LOGGER.warn(message);
+        LOGGER.warn(message);
+    }
+
+    public void logError10() {
+        for (int i = 0; i < 10; i++) {
+            LOGGER.error("error: {}", i);
+        }
+    }
+}
+```
+
+Finally, we write test for it:
+
+```
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.simplify4u.sjf4jmock.LoggerMock;
+import org.slf4j.Logger;
+
+public class ExampleTest {
+
+    private static final String INFO_TEST_MESSAGE = "info log test message";
+    private static final String WARN_TEST_MESSAGE = "warn log test message";
+    private static final String DEBUG_TEST_MESSAGE = "debug log test message";
+    private static final String DEBUG_TEST_FORMAT = "Debug: {}";
+
+    private Example sut;
+
+    @Before
+    public void setup() {
+        LoggerMock.clearInvocations();
+        sut = new Example();
+    }
+
+
+    @Test
+    public void debugShouldNotBeLogged() {
+
+        // given
+        Logger logger = LoggerMock.getLoggerMock(Example.class);
+        when(logger.isDebugEnabled()).thenReturn(false);
+
+        // when
+        sut.methodWithLogDebug(DEBUG_TEST_FORMAT, DEBUG_TEST_MESSAGE);
+
+        // then
+        verify(logger).isDebugEnabled();
+        verifyNoMoreInteractions(logger);
+    }
+
+    @Test
+    public void debugShouldBeLogged() {
+
+        // given
+        Logger logger = LoggerMock.getLoggerMock(Example.class);
+        when(logger.isDebugEnabled()).thenReturn(true);
+
+        // when
+        sut.methodWithLogDebug(DEBUG_TEST_FORMAT, DEBUG_TEST_MESSAGE);
+
+        // then
+        verify(logger).isDebugEnabled();
+        verify(logger).debug(DEBUG_TEST_FORMAT, DEBUG_TEST_MESSAGE);
+        verifyNoMoreInteractions(logger);
+    }
+
+    @Test
+    public void warnShouldBeLoggedTwice() {
+
+        // when
+        sut.methodWithLogWarn(WARN_TEST_MESSAGE);
+
+        // then
+        Logger logger = LoggerMock.getLoggerMock(Example.class.getName());
+        verify(logger, times(2)).warn(WARN_TEST_MESSAGE);
+        verifyNoMoreInteractions(logger);
+    }
+
+    @Test
+    public void errorShouldBeLogged10Times() {
+
+        // when
+        sut.logError10();
+
+        // then
+        Logger logger = LoggerMock.getLoggerMock(Example.class.getName());
+        verify(logger, times(10)).error(anyString(), any(Object.class));
+        verifyNoMoreInteractions(logger);
+    }
+}
+```
+
+As we see thanks mocking slf4j logger we can prepare test for many scenarios which we want.
+
