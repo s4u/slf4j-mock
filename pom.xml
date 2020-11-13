@@ -117,6 +117,32 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.simplify4u.plugins</groupId>
+                <artifactId>pgpverify-maven-plugin</artifactId>
+                <version>1.9.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <keysMapLocation>/pgp-keys-map.list</keysMapLocation>
+                    <verifyPlugins>true</verifyPlugins>
+                    <verifyPluginDependencies>true</verifyPluginDependencies>
+                    <verifyAtypical>true</verifyAtypical>
+                    <quiet>true</quiet>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.simplify4u</groupId>
+                        <artifactId>pgp-keys-map</artifactId>
+                        <version>2020.08</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
                 <!-- copy source of SimpleLogger -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
