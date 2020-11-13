@@ -17,6 +17,14 @@
 package org.simplify4u.sl4jmock.test;
 
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.simplify4u.sjf4jmock.LoggerMock;
+import org.slf4j.Logger;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
@@ -24,16 +32,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.simplify4u.sjf4jmock.LoggerMock;
-import org.slf4j.Logger;
-
-@RunWith(MockitoJUnitRunner.class)
-public class ExampleTest {
+@ExtendWith(MockitoExtension.class)
+class ExampleTest {
 
     private static final String INFO_TEST_MESSAGE = "info log test message";
     private static final String WARN_TEST_MESSAGE = "warn log test message";
@@ -43,14 +43,14 @@ public class ExampleTest {
     @InjectMocks
     private Example sut;
 
-    @Before
+    @BeforeEach
     public void setup() {
         LoggerMock.clearInvocations();
     }
 
 
     @Test
-    public void logDebugShouldNotBeLogged() {
+    void logDebugShouldNotBeLogged() {
 
         // given
         Logger logger = LoggerMock.getLoggerMock(Example.class);
@@ -65,7 +65,7 @@ public class ExampleTest {
     }
 
     @Test
-    public void logDebugShouldBeLogged() {
+    void logDebugShouldBeLogged() {
 
         // given
         Logger logger = LoggerMock.getLoggerMock(Example.class);
@@ -81,7 +81,7 @@ public class ExampleTest {
     }
 
     @Test
-    public void logInfoShouldBeLogged() {
+    void logInfoShouldBeLogged() {
 
         // when
         sut.methodWithLogInfo(INFO_TEST_MESSAGE);
@@ -93,7 +93,7 @@ public class ExampleTest {
     }
 
     @Test
-    public void logWarnShouldBeLoggedTwice() {
+    void logWarnShouldBeLoggedTwice() {
 
         // when
         sut.methodWithLogWarn(WARN_TEST_MESSAGE);
@@ -105,7 +105,7 @@ public class ExampleTest {
     }
 
     @Test
-    public void logError10Times() {
+    void logError10Times() {
 
         // when
         sut.logError100();

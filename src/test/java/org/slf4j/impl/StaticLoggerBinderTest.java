@@ -18,19 +18,19 @@ package org.slf4j.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.simplify4u.sjf4jmock.LoggerFactory;
 
-public class StaticLoggerBinderTest {
+class StaticLoggerBinderTest {
 
     @Test
-    public void staticLoggerBinderReturnCorrectFactory() {
+    void staticLoggerBinderReturnCorrectFactory() {
         assertThat(StaticLoggerBinder.getSingleton().getLoggerFactory())
                 .isExactlyInstanceOf(LoggerFactory.class);
     }
 
     @Test
-    public void staticLoggerBinderReturnCorrectFactoryClassStr() {
+    void staticLoggerBinderReturnCorrectFactoryClassStr() {
         assertThat(StaticLoggerBinder.getSingleton().getLoggerFactoryClassStr())
                 .isEqualTo(LoggerFactory.class.getName());
     }
