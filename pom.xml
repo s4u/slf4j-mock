@@ -29,7 +29,7 @@
     <name>SLF4J mock</name>
 
     <description>Library to easy mock request on sl4j-api</description>
-    <url>${project.organization.url}/${github.repo}</url>
+    <url>https://www.simplify4u.org/slf4j-mock</url>
     <inceptionYear>2020</inceptionYear>
 
     <licenses>
@@ -114,12 +114,13 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
         </dependency>
+
+        <!-- testing -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
