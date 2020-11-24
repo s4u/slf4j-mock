@@ -15,10 +15,10 @@
  */
 package org.slf4j.impl;
 
-import org.simplify4u.sjf4jmock.MDCMock;
+import org.simplify4u.slf4jmock.MDCMock;
 import org.slf4j.spi.MDCAdapter;
 
-public class StaticMDCBinder {
+public class StaticMDCBinder extends MDCMock {
 
     static final StaticMDCBinder SINGLETON = new StaticMDCBinder();
 
@@ -32,6 +32,6 @@ public class StaticMDCBinder {
     }
 
     public MDCAdapter getMDCA() {
-        return MDCMock.getMock();
+        return getMock();
     }
 }

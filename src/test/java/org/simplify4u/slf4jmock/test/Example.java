@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.simplify4u.sl4jmock.test;
+package org.simplify4u.slf4jmock.test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

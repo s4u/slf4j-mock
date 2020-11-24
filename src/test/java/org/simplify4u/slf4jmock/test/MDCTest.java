@@ -13,15 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.simplify4u.sl4jmock.test;
+package org.simplify4u.slf4jmock.test;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.simplify4u.sjf4jmock.MDCMock;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.simplify4u.slf4jmock.MDCMock;
 import org.slf4j.MDC;
 import org.slf4j.spi.MDCAdapter;
 
@@ -33,12 +38,19 @@ import static org.mockito.Mockito.when;
 
 public class MDCTest {
 
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     static abstract class MDCTestCommon {
+
+        @Mock
+        MDCAdapter mdcMock;
+
+        @Test
+        void noMDCInteraction() {
+            verifyNoInteractions(mdcMock);
+        }
 
         @Test
         void verifyPut() {
-
-            MDCAdapter mdcMock = MDCMock.getMock();
 
             MDC.put("key", "value");
 
@@ -47,26 +59,8 @@ public class MDCTest {
         }
 
         @Test
-        void noMDCInteraction() {
-            MDCAdapter mdcMock = MDCMock.getMock();
-            verifyNoInteractions(mdcMock);
-        }
-    }
-
-    @Nested
-    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-    class MDCClearInvocation extends MDCTestCommon {
-
-        @AfterEach
-        void cleanUp() {
-            MDCMock.clearInvocations();
-        }
-
-        @Test
         @Order(1)
-        void mockGetMethod() {
-
-            MDCAdapter mdcMock = MDCMock.getMock();
+        void getMethodWithStub() {
 
             when(mdcMock.get("key")).thenReturn("value");
 
@@ -78,52 +72,35 @@ public class MDCTest {
 
         @Test
         @Order(2)
-        void getMethodAfterClearInvocation() {
-
-            MDCAdapter mdcMock = MDCMock.getMock();
+        void getMethodWithOutStub() {
 
             // we have active stubbing from previous test
-            assertThat(MDC.get("key")).isEqualTo("value");
-
-            verify(mdcMock).get("key");
-            verifyNoMoreInteractions(mdcMock);
-        }
-    }
-
-    @Nested
-    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-    class MDCReset extends MDCTestCommon {
-
-        @AfterEach
-        void cleanUp() {
-            MDCMock.reset();
-        }
-
-        @Test
-        @Order(1)
-        void mockGetMethod() {
-
-            MDCAdapter mdcMock = MDCMock.getMock();
-
-            when(mdcMock.get("key")).thenReturn("value");
-
-            assertThat(MDC.get("key")).isEqualTo("value");
-
-            verify(mdcMock).get("key");
-            verifyNoMoreInteractions(mdcMock);
-        }
-
-        @Test
-        @Order(2)
-        void getMethodAfterReset() {
-
-            MDCAdapter mdcMock = MDCMock.getMock();
-
-            // after reset stubbing is not present
             assertThat(MDC.get("key")).isNull();
 
             verify(mdcMock).get("key");
             verifyNoMoreInteractions(mdcMock);
+        }
+
+    }
+
+    @Nested
+    @ExtendWith(MockitoExtension.class)
+    class WithMockitoExtension extends MDCTestCommon {
+        // Mockito will do job for us
+    }
+
+    @Nested
+    class ManualMock extends MDCTestCommon {
+
+        @BeforeEach
+        void setup() {
+            mdcMock = Mockito.mock(MDCAdapter.class);
+            MDCMock.setMock(mdcMock);
+        }
+
+        @AfterEach
+        void cleanup() {
+            MDCMock.clearMock();
         }
     }
 }
