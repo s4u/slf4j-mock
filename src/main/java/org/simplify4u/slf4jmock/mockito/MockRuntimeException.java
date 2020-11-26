@@ -13,21 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.slf4j.impl;
+
+package org.simplify4u.slf4jmock.mockito;
 
 /**
- * Delegation to SimpleLogger by protected constructor.
- * This class is for internal use only.
+ * Indicate problems during Mocks preparation.
  */
-public abstract class AbstractSimpleLoggerDelegate extends SimpleLogger {
+public class MockRuntimeException extends RuntimeException {
+    private static final long serialVersionUID = 4836951360861753929L;
 
-    private static final long serialVersionUID = -801568980283201312L;
-
-    static {
-        SimpleLogger.lazyInit();
-    }
-
-    protected AbstractSimpleLoggerDelegate(String name) {
-        super(name);
+    MockRuntimeException(String message) {
+        super(message);
     }
 }

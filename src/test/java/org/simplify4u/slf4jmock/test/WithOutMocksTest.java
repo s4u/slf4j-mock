@@ -13,18 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.simplify4u.sjf4jmock;
 
-import org.slf4j.impl.AbstractSimpleLoggerDelegate;
+package org.simplify4u.slf4jmock.test;
 
-/**
- * Access to SLF4J SimpleLogger by own implementation.
- */
-class SimpleLogger extends AbstractSimpleLoggerDelegate {
+import org.junit.jupiter.api.Test;
+import org.slf4j.MDC;
 
-    private static final long serialVersionUID = -1050011592280122282L;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
-    SimpleLogger(String name) {
-        super(name);
+class WithOutMocksTest {
+
+    private Example sut = new Example();
+
+    @Test
+    void loggerTest() {
+        assertThatCode(() -> sut.methodWithLogInfo("Some message"))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    void mdcTest() {
+        assertThat(MDC.get("key")).isNull();
     }
 }

@@ -15,16 +15,19 @@
  */
 package org.slf4j.impl;
 
-import org.simplify4u.slf4jmock.LoggerMock;
+/**
+ * Delegation to SimpleLogger by protected constructor.
+ * This class is for internal use only.
+ */
+public class SimpleLoggerDelegate extends SimpleLogger {
 
-public class StaticLoggerBinder extends LoggerMock {
+    private static final long serialVersionUID = -801568980283201312L;
 
-    private static final StaticLoggerBinder SINGLETON = new StaticLoggerBinder();
+    static {
+        SimpleLogger.lazyInit();
+    }
 
-    @SuppressWarnings("unused")
-    public static final String REQUESTED_API_VERSION = "1.7";
-
-    public static StaticLoggerBinder getSingleton() {
-        return SINGLETON;
+    public SimpleLoggerDelegate(String name) {
+        super(name);
     }
 }

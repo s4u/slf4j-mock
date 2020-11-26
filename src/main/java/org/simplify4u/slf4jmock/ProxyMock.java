@@ -13,18 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.slf4j.impl;
 
-import org.simplify4u.slf4jmock.LoggerMock;
+package org.simplify4u.slf4jmock;
 
-public class StaticLoggerBinder extends LoggerMock {
+import org.slf4j.Logger;
 
-    private static final StaticLoggerBinder SINGLETON = new StaticLoggerBinder();
+/**
+ * Interface to describe proxy for created Logger.
+ * <p>
+ * For internal use only.
+ */
+public interface ProxyMock {
 
-    @SuppressWarnings("unused")
-    public static final String REQUESTED_API_VERSION = "1.7";
+    void setMock(Object mock);
 
-    public static StaticLoggerBinder getSingleton() {
-        return SINGLETON;
-    }
+    Object getMock();
+
+    void clearMock();
+
+    String getMockName();
 }

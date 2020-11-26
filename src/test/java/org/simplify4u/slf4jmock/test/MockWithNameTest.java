@@ -14,26 +14,32 @@
  * limitations under the License.
  */
 
-package org.slf4j.impl;
+package org.simplify4u.slf4jmock.test;
 
 import org.junit.jupiter.api.Test;
-import org.simplify4u.slf4jmock.LoggerMock;
-import org.slf4j.ILoggerFactory;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
 
-import static org.assertj.core.api.Assertions.assertThat;
+@ExtendWith(MockitoExtension.class)
+class MockWithNameTest {
 
-class StaticLoggerBinderTest {
+    @Mock(name = "org.simplify4u.slf4jmock.test.Example")
+    Logger logger1;
+
+    @Mock(name = "org.simplify4u.slf4jmock.test.Example2")
+    Logger logger2;
 
     @Test
-    void staticLoggerBinderReturnCorrectFactory() {
-        assertThat(StaticLoggerBinder.getSingleton().getLoggerFactory())
-                .isInstanceOf(ILoggerFactory.class);
-    }
+    void testNamedMock() {
+        Example sut = new Example();
 
-    @Test
-    void staticLoggerBinderReturnCorrectFactoryClassStr() {
-       assertThat(StaticLoggerBinder.getSingleton().getLoggerFactoryClassStr())
-                .startsWith(LoggerMock.class.getName());
+        sut.methodWithLogInfo("Info message");
+
+        Mockito.verify(logger1).info("Info message");
+        Mockito.verifyNoInteractions(logger2);
     }
 
 }

@@ -6,10 +6,13 @@ Yet another way to testing logging in application which use `SLF4J`.
 Features
 --------
 
- - this binding create `Mockito` mock for each `Logger`
- - all call to `Logger` method are delegated to instance of `SimpleLogger`,
-   so you can create standard `simplelogger.properties` 
+ - this binding support for easy create `Mockito` mock for `Logger`
+ - call to `Logger` can be delegated to instance of `SimpleLogger`,
+   so we can create standard `simplelogger.properties` 
+ - support for testing and mocking `MDC`
  - light transitive dependencies - only `slf4j-api` and `mockito-core`
+ - support testing in parallel in multi thread
+ - all the Magic are done by `Mockito` plugins, so you don't need to directly use class from this library
  - ease use
 
 Contributing and helps
@@ -49,113 +52,234 @@ public class Example {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Example.class);
 
-    public void methodWithLogDebug(String format, String args) {
-
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(format, args);
-        }
-    }
-
-    public void methodWithLogWarn(String message) {
-        LOGGER.warn(message);
-        LOGGER.warn(message);
-    }
-
-    public void logError10() {
-        for (int i = 0; i < 10; i++) {
-            LOGGER.error("error: {}", i);
-        }
+    public void methodWithLogInfo(String message) {
+        LOGGER.info(message);
     }
 }
 ```
 
-Finally, we write test for it:
+#[[###]]# JUnit4
 
 ```
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-
-import org.junit.Before;
 import org.junit.Test;
-import org.simplify4u.sjf4jmock.LoggerMock;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 
-public class ExampleTest {
+@RunWith(MockitoJUnitRunner.class)
+public class JUnit4ExampleTest {
 
-    private static final String INFO_TEST_MESSAGE = "info log test message";
-    private static final String WARN_TEST_MESSAGE = "warn log test message";
-    private static final String DEBUG_TEST_MESSAGE = "debug log test message";
-    private static final String DEBUG_TEST_FORMAT = "Debug: {}";
+    private static final String INFO_TEST_MESSAGE = "info log test message from JUnit4";
 
-    private Example sut;
+    @Mock
+    Logger logger;
 
-    @Before
-    public void setup() {
-        LoggerMock.clearInvocations();
-        sut = new Example();
-    }
-
+    @InjectMocks
+    Example sut;
 
     @Test
-    public void debugShouldNotBeLogged() {
-
-        // given
-        Logger logger = LoggerMock.getLoggerMock(Example.class);
-        when(logger.isDebugEnabled()).thenReturn(false);
+    public void logInfoShouldBeLogged() {
 
         // when
-        sut.methodWithLogDebug(DEBUG_TEST_FORMAT, DEBUG_TEST_MESSAGE);
+        sut.methodWithLogInfo(INFO_TEST_MESSAGE);
 
         // then
-        verify(logger).isDebugEnabled();
-        verifyNoMoreInteractions(logger);
-    }
-
-    @Test
-    public void debugShouldBeLogged() {
-
-        // given
-        Logger logger = LoggerMock.getLoggerMock(Example.class);
-        when(logger.isDebugEnabled()).thenReturn(true);
-
-        // when
-        sut.methodWithLogDebug(DEBUG_TEST_FORMAT, DEBUG_TEST_MESSAGE);
-
-        // then
-        verify(logger).isDebugEnabled();
-        verify(logger).debug(DEBUG_TEST_FORMAT, DEBUG_TEST_MESSAGE);
-        verifyNoMoreInteractions(logger);
-    }
-
-    @Test
-    public void warnShouldBeLoggedTwice() {
-
-        // when
-        sut.methodWithLogWarn(WARN_TEST_MESSAGE);
-
-        // then
-        Logger logger = LoggerMock.getLoggerMock(Example.class.getName());
-        verify(logger, times(2)).warn(WARN_TEST_MESSAGE);
-        verifyNoMoreInteractions(logger);
-    }
-
-    @Test
-    public void errorShouldBeLogged10Times() {
-
-        // when
-        sut.logError10();
-
-        // then
-        Logger logger = LoggerMock.getLoggerMock(Example.class.getName());
-        verify(logger, times(10)).error(anyString(), any(Object.class));
-        verifyNoMoreInteractions(logger);
+        Mockito.verify(logger).info(INFO_TEST_MESSAGE);
+        Mockito.verifyNoMoreInteractions(logger);
     }
 }
 ```
 
-As we see thanks mocking slf4j logger we can prepare test for many scenarios which we want.
+#[[###]]# JUnit5
 
+```
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+
+@ExtendWith(MockitoExtension.class)
+class JUnit5ExampleTest {
+
+    private static final String INFO_TEST_MESSAGE = "info log test message from JUnit5";
+
+    @Mock
+    Logger logger;
+
+    @InjectMocks
+    Example sut;
+
+    @Test
+    void logInfoShouldBeLogged() {
+
+        // when
+        sut.methodWithLogInfo(INFO_TEST_MESSAGE);
+
+        // then
+        Mockito.verify(logger).info(INFO_TEST_MESSAGE);
+        Mockito.verifyNoMoreInteractions(logger);
+    }
+}
+```
+MDC support
+-----------
+
+Example for `MDC` testing
+
+```
+...
+import org.slf4j.spi.MDCAdapter;
+
+class MDCTest {
+
+        @Mock
+        MDCAdapter mdcMock;
+
+        @Test
+        void testPut() {
+
+            MDC.put("key", "value");
+
+            verify(mdcMock).put("key", "value");
+            verifyNoMoreInteractions(mdcMock);
+        }
+
+        @Test
+        void testGet() {
+
+            when(mdcMock.get("key")).thenReturn("value");
+
+            assertThat(MDC.get("key")).isEqualTo("value");
+
+            verify(mdcMock).get("key");
+            verifyNoMoreInteractions(mdcMock);
+        }
+}
+```
+
+As we see in this case we only need Mock for `MDCAdapter`
+
+Mock and Spy
+-------------------------------------
+
+In tests, we can use `Mockito` annotation to define Logger
+
+ - `@Mock` - create Mock for Logger - all call we be done on Mock, 
+    so any output will not occur from Logger
+
+ - `@Spy` - create Spy with SimpleLogger - all call we be done on real methods, 
+    so standard behavior for SimpleLogger will be kept
+
+Bind Mock to Logger
+-------------------
+
+#[[###]]# One Mock, one Logger in class under test
+
+You simply define:
+
+```
+        @Mock
+        Logger logger;
+
+        @InjectMocks
+        private Example sut;
+
+```
+
+In this case Example class must have defined one Logger, which be used.
+
+#[[###]]# Named Mock for Logger
+
+When we want to use in one test more than one Logger we must create Mock with a name.
+
+```
+        @Mock(name = "org.simplify4u.slf4jmock.test.Example1")
+        Logger logger1;
+
+        @Mock(name = "org.simplify4u.slf4jmock.test.Example2")
+        Logger logger1;
+```
+
+#[[###]]# Named Spy for Logger
+
+We also can create Spy for desired Logger, by creating SimpleLogger
+
+```
+    @Spy
+    Logger logger1 = new SimpleLogger(Example.class);
+
+    @Spy
+    Logger logger2 = new SimpleLogger("org.example.Logger");
+```
+
+Manual bind Mock to Logger
+--------------------------
+
+When we don't have possibility to use  `@ExtendWith(MockitoExtension.class)`, `@RunWith(MockitoJUnitRunner.class)`
+or equivalent method, we can try to start Mockito session manually
+
+```
+class MyTest {
+
+    @Mock
+    Logger logger;
+
+    ...
+
+    MockitoSession mockitoSession;    
+    
+    @Before
+    void setup() {
+        mockitoSession = Mockito.mockitoSession().initMocks(this).startMocking();
+    }
+    
+    @After
+    void cleanup() {
+        mockitoSession.finishMocking();
+   }
+
+    @Test
+    void test() {
+        ....
+    }
+}
+``` 
+
+
+or when above is also not possible we must manually bind Mock to Logger.
+
+```
+import org.simplify4u.slf4jmock.LoggerMock;
+
+class MyTest {
+
+    Logger logger;
+    
+    @Before
+    void setup() {
+        logger = Mockito.mock(Logger.class);
+        LoggerMock.setMock(Example.class, logger);
+    }
+    
+    @After
+    void cleanup() {
+        LoggerMock.clearMock(Example.class);
+    }
+
+    @Test
+    void test() {
+        ....
+    }
+}
+``` 
+
+More examples
+-------------
+
+Yuo can look at source code [tests](${project.scm.url}/tree/master/src/test/java/org/simplify4u/slf4jmock/test):

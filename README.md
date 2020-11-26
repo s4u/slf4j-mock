@@ -7,10 +7,13 @@
 Yet another way to testing logging in application which use SLF4J.
 
 ## Features
- - this binding create `Mockito` mock for each `Logger`
- - all call to `Logger` method are delegated to instance of `SimpleLogger`,
-   so you can create standard `simplelogger.properties` 
+ - this binding support for easy create `Mockito` mock for `Logger`
+ - call to `Logger` can be delegated to instance of `SimpleLogger`,
+   so we can create standard `simplelogger.properties` 
+ - support for testing and mocking `MDC`
  - light transitive dependencies - only `slf4j-api` and `mockito-core`
+ - support testing in parallel in multi thread
+ - all the Magic are done by `Mockito` plugins, so you don't need to directly use class from this library
  - ease use
  
 ## Example of usage
@@ -29,24 +32,30 @@ Add dependency to your project:
 Please remember, that you can only have one `SLF4J` binding on classpath,
 in the most case you must replace `org.slf4j:slf4j-simple` by `org.simplify4u:slf4j-mock`.
 
-Usually Logger are created once on start by static reference,
-so we must clear invocation on created mocks before each test:
- 
-    @Before
-    public void setup() {
-        LoggerMock.clearInvocations();
+Write test:
+
+    class MyTest {
+
+        @Mock
+        Logger logger;
+    
+        @InjectMocks
+        Example sut;
+
+        @Test
+        public void logInfoShouldBeLogged() {
+    
+            // when
+            sut.methodWithLogInfo(INFO_TEST_MESSAGE);
+    
+            // then
+            verify(logger).info(INFO_TEST_MESSAGE);
+            verifyNoMoreInteractions(logger);
+        }
     }
 
-write test:
+# Project homepage
 
-    @Test
-    public void logInfoShouldBeLogged() {
+More information and examples you can find on site:
 
-        // when
-        sut.methodWithLogInfo(INFO_TEST_MESSAGE);
-
-        // then
-        Logger logger = LoggerMock.getLoggerMock(Example.class);
-        verify(logger).info(INFO_TEST_MESSAGE);
-        verifyNoMoreInteractions(logger);
-    }
+https://www.simplify4u.org/slf4j-mock/

@@ -13,18 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.slf4j.impl;
 
-import org.simplify4u.slf4jmock.LoggerMock;
+package org.simplify4u.slf4jmock.test;
 
-public class StaticLoggerBinder extends LoggerMock {
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
 
-    private static final StaticLoggerBinder SINGLETON = new StaticLoggerBinder();
 
-    @SuppressWarnings("unused")
-    public static final String REQUESTED_API_VERSION = "1.7";
+@ExtendWith(MockitoExtension.class)
+class SpyLoggerTest {
 
-    public static StaticLoggerBinder getSingleton() {
-        return SINGLETON;
+    @Spy
+    private Logger logger;
+
+    @InjectMocks
+    private Example sut;
+
+    @Test
+    void testSpy() {
+
+        sut.methodWithLogInfo("Info message");
+
+        Mockito.verify(logger).info("Info message");
+        Mockito.verifyNoMoreInteractions(logger);
     }
+
 }
