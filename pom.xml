@@ -75,6 +75,7 @@
         <mockito.version>3.6.28</mockito.version>
         <assertj.version>3.18.1</assertj.version>
         <sonar.coverage.exclusions>**/slf4jmock/SimpleLogger.java</sonar.coverage.exclusions>
+        <project.build.outputTimestamp>2021-01-02T15:00:00Z</project.build.outputTimestamp>
     </properties>
 
     <dependencyManagement>
