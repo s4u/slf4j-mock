@@ -4,17 +4,17 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=org.simplify4u%3Aslf4j-mock&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.simplify4u%3Aslf4j-mock)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=org.simplify4u%3Aslf4j-mock&metric=ncloc)](https://sonarcloud.io/dashboard?id=org.simplify4u%3Aslf4j-mock)
 
-Yet another way to testing logging in application which use SLF4J.
+Yet another way to test logging in to applications which use SLF4J.
 
 ## Features
- - this binding support for easy create `Mockito` mock for `Logger`
+ - binding support for easy creation of `Mockito` mocks for `Logger`
  - call to `Logger` can be delegated to instance of `SimpleLogger`,
    so we can create standard `simplelogger.properties` 
  - support for testing and mocking `MDC`
  - light transitive dependencies - only `slf4j-api` and `mockito-core`
  - support testing in parallel in multi thread
  - all the Magic are done by `Mockito` plugins, so you don't need to directly use class from this library
- - ease use
+ - ease of use
  
 ## Example of usage
 
@@ -56,6 +56,6 @@ Write test:
 
 # Project homepage
 
-More information and examples you can find on site:
+You can find more information and examples on the site:
 
 https://www.simplify4u.org/slf4j-mock/
