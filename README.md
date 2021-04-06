@@ -4,7 +4,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=org.simplify4u%3Aslf4j-mock&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.simplify4u%3Aslf4j-mock)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=org.simplify4u%3Aslf4j-mock&metric=ncloc)](https://sonarcloud.io/dashboard?id=org.simplify4u%3Aslf4j-mock)
 
-Yet another way to test logging in to applications which use SLF4J.
+Yet another way to test logging in applications which use SLF4J.
 
 ## Features
  - binding support for easy creation of `Mockito` mocks for `Logger`
