@@ -39,7 +39,7 @@ public class LoggerMock implements LoggerFactoryBinder {
     private static final Map<String, Logger> loggers = new HashMap<>();
 
     private static Logger createNewLoggerProxy(String name) {
-        return (Logger) Proxy.newProxyInstance(LoggerMock.class.getClassLoader(),
+        return (Logger) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
                 new Class<?>[]{Logger.class, ProxyMock.class},
                 new MockInvocationHandler(name, () ->
                         mock(SimpleLogger.class, withSettings().spiedInstance(new SimpleLogger(name)).stubOnly())
