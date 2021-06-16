@@ -33,7 +33,7 @@ First we should add `slf4j-mock` binding as dependency to our project.
 <dependency>
     <groupId>org.simplify4u</groupId>
     <artifactId>slf4j-mock</artifactId>
-    <version>${project.version}<version>
+    <version>${project.version}</version>
     <scope>test</scope>
 </dependency>
 ```
