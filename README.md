@@ -24,7 +24,7 @@ Add dependency to your project:
         <dependency>
             <groupId>org.simplify4u</groupId>
             <artifactId>slf4j-mock</artifactId>
-            <version><!-- check relases page --><version>  
+            <version><!-- check relases page --></version>  
             <scope>test</scope>        
         </dependency>
     <dependencies>
