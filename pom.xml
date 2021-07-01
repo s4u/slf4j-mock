@@ -70,7 +70,7 @@
     </distributionManagement>
 
     <properties>
-        <slf4j.version>1.7.30</slf4j.version>
+        <slf4j.version>1.7.31</slf4j.version>
         <junit.version>5.7.2</junit.version>
         <mockito.version>3.11.1</mockito.version>
         <assertj.version>3.20.1</assertj.version>
