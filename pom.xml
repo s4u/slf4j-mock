@@ -175,7 +175,7 @@
                     <dependency>
                         <groupId>org.simplify4u</groupId>
                         <artifactId>pgp-keys-map</artifactId>
-                        <version>2021.07.02</version>
+                        <version>2021.07.12</version>
                     </dependency>
                 </dependencies>
             </plugin>
