@@ -16,8 +16,6 @@
 
 package org.simplify4u.slf4jmock;
 
-import org.slf4j.Logger;
-
 /**
  * Interface to describe proxy for created Logger.
  * <p>
@@ -29,6 +27,9 @@ public interface ProxyMock {
 
     Object getMock();
 
+    /**
+     * reset internal mocks state.
+     */
     void clearMock();
 
     String getMockName();

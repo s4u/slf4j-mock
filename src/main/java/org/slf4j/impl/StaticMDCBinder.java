@@ -18,6 +18,9 @@ package org.slf4j.impl;
 import org.simplify4u.slf4jmock.MDCMock;
 import org.slf4j.spi.MDCAdapter;
 
+/**
+ * Implementation for MDC Binder
+ */
 public class StaticMDCBinder extends MDCMock {
 
     static final StaticMDCBinder SINGLETON = new StaticMDCBinder();
