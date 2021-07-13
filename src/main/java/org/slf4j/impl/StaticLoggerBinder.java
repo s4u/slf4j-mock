@@ -17,6 +17,9 @@ package org.slf4j.impl;
 
 import org.simplify4u.slf4jmock.LoggerMock;
 
+/**
+ * Implementation of Logger Binder.
+ */
 public class StaticLoggerBinder extends LoggerMock {
 
     private static final StaticLoggerBinder SINGLETON = new StaticLoggerBinder();

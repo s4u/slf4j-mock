@@ -33,7 +33,7 @@ public class MDCMock {
     }
 
     private static MDCAdapter initMockProxy() {
-        return (MDCAdapter) Proxy.newProxyInstance(MDCMock.class.getClassLoader(),
+        return (MDCAdapter) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
                 new Class<?>[]{MDCAdapter.class, ProxyMock.class},
                 new MockInvocationHandler("MDC", () -> mock(MDCAdapter.class, withSettings().stubOnly()))
         );
