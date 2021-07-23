@@ -25,7 +25,7 @@
     </parent>
 
     <artifactId>slf4j-mock</artifactId>
-    <version>2.1.1</version>
+    <version>2.1.2-SNAPSHOT</version>
     <name>SLF4J mock</name>
 
     <description>Library to easy mock request on sl4j-api</description>
@@ -59,7 +59,7 @@
         <connection>scm:git:git@github.com:s4u/slf4j-mock.git</connection>
         <developerConnection>${project.scm.connection}</developerConnection>
         <url>https://github.com/s4u/slf4j-mock</url>
-        <tag>v2.1.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
@@ -75,7 +75,7 @@
         <mockito.version>3.11.2</mockito.version>
         <assertj.version>3.20.2</assertj.version>
         <sonar.coverage.exclusions>**/slf4jmock/SimpleLogger.java</sonar.coverage.exclusions>
-        <project.build.outputTimestamp>2021-07-23T17:52:41Z</project.build.outputTimestamp>
+        <project.build.outputTimestamp>2021-07-23T17:52:50Z</project.build.outputTimestamp>
     </properties>
 
     <dependencyManagement>
