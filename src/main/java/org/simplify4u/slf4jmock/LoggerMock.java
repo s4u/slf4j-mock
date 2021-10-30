@@ -20,11 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.spi.LoggerFactoryBinder;
 
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.withSettings;
@@ -55,12 +52,6 @@ public class LoggerMock implements LoggerFactoryBinder {
 
     protected static ProxyMock getProxyByName(String name) {
         return (ProxyMock) getLoggerProxyByName(name);
-    }
-
-    protected static Collection<ProxyMock> getAllProxies() {
-        return loggers.values().stream()
-                .map(ProxyMock.class::cast)
-                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
