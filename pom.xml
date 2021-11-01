@@ -209,9 +209,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
-                    <sourceFileExcludes>
-                        <sourceFileExclude>org/slf4j/impl/SimpleLogger*.java</sourceFileExclude>
-                    </sourceFileExcludes>
+                    <excludePackageNames>org.slf4j.impl</excludePackageNames>
                 </configuration>
             </plugin>
         </plugins>
