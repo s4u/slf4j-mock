@@ -21,7 +21,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.internal.configuration.InjectingAnnotationEngine;
-import org.mockito.internal.util.reflection.Fields;
 import org.mockito.internal.util.reflection.InstanceField;
 import org.simplify4u.slf4jmock.LoggerMock;
 import org.simplify4u.slf4jmock.MDCMock;
@@ -30,6 +29,8 @@ import org.simplify4u.slf4jmock.SimpleLogger;
 import org.slf4j.Logger;
 import org.slf4j.spi.MDCAdapter;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -66,9 +67,19 @@ public final class LoggerAnnotationEngine extends InjectingAnnotationEngine {
         };
     }
 
+    private static List<InstanceField> allDeclaredFieldsOf(Object testInstance) {
+        List<InstanceField> result = new ArrayList<>();
+        for (Class<?> clazz = testInstance.getClass(); clazz != Object.class; clazz = clazz.getSuperclass()) {
+            for (Field field : clazz.getDeclaredFields()) {
+                result.add(new InstanceField(field, testInstance));
+            }
+        }
+        return result;
+    }
+
     private static InstanceField prepareSpyLogger(Object testInstance) {
 
-        List<InstanceField> spyMocks = Fields.allDeclaredFieldsOf(testInstance).instanceFields()
+        List<InstanceField> spyMocks = allDeclaredFieldsOf(testInstance)
                 .stream()
                 .filter(field -> field.jdkField().getType() == Logger.class)
                 .filter(field -> field.isAnnotatedBy(Spy.class))
@@ -87,7 +98,7 @@ public final class LoggerAnnotationEngine extends InjectingAnnotationEngine {
     }
 
     private static Optional<MDCAdapter> findMDCMock(Object testInstance) {
-        List<InstanceField> mdcFields = Fields.allDeclaredFieldsOf(testInstance).instanceFields()
+        List<InstanceField> mdcFields = allDeclaredFieldsOf(testInstance)
                 .stream()
                 .filter(instanceField -> instanceField.jdkField().getType() == MDCAdapter.class)
                 .filter(instanceField -> instanceField.isAnnotatedBy(Mock.class))
@@ -107,7 +118,7 @@ public final class LoggerAnnotationEngine extends InjectingAnnotationEngine {
     }
 
     private static List<InstanceField> findClassUnderTest(Object testInstance) {
-        return Fields.allDeclaredFieldsOf(testInstance).instanceFields()
+        return allDeclaredFieldsOf(testInstance)
                 .stream()
                 .filter(instanceField -> instanceField.isAnnotatedBy(InjectMocks.class))
                 .collect(Collectors.toList());
@@ -115,7 +126,7 @@ public final class LoggerAnnotationEngine extends InjectingAnnotationEngine {
 
     private static Map<String, Logger> findLoggersMocks(Object testInstance, InstanceField spyToSet) {
 
-        Map<String, Logger> loggerMocks = Fields.allDeclaredFieldsOf(testInstance).instanceFields()
+        Map<String, Logger> loggerMocks = allDeclaredFieldsOf(testInstance)
                 .stream()
                 .filter(field -> field.jdkField().getType() == Logger.class)
                 .filter(field -> field.isAnnotatedBy(Mock.class) || field.isAnnotatedBy(Spy.class))
@@ -137,8 +148,7 @@ public final class LoggerAnnotationEngine extends InjectingAnnotationEngine {
 
         List<InstanceField> loggersUnderTest = classesUnderTest.stream()
                 .map(InstanceField::read)
-                .map(Fields::allDeclaredFieldsOf)
-                .map(Fields.InstanceFields::instanceFields)
+                .map(LoggerAnnotationEngine::allDeclaredFieldsOf)
                 .flatMap(List::stream)
                 .filter(field -> field.jdkField().getType() == Logger.class)
                 .collect(Collectors.toList());
