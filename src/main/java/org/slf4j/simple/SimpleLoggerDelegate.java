@@ -13,28 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.slf4j.impl;
-
-import org.simplify4u.slf4jmock.MDCMock;
-import org.slf4j.spi.MDCAdapter;
+package org.slf4j.simple;
 
 /**
- * Implementation for MDC Binder
+ * Delegation to SimpleLogger by protected constructor.
+ * This class is for internal use only.
  */
-public class StaticMDCBinder extends MDCMock {
+public class SimpleLoggerDelegate extends SimpleLogger {
 
-    static final StaticMDCBinder SINGLETON = new StaticMDCBinder();
+    private static final long serialVersionUID = -801568980283201312L;
 
-    /**
-     * Return the singleton of this class.
-     *
-     * @return the StaticMDCBinder singleton
-     */
-    public static StaticMDCBinder getSingleton() {
-        return SINGLETON;
+    static {
+        lazyInit();
     }
 
-    public MDCAdapter getMDCA() {
-        return getMock();
+    public SimpleLoggerDelegate(String name) {
+        super(name);
     }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.slf4j.impl;
+package org.slf4j.simple;
 
 import org.junit.jupiter.api.Test;
 import org.simplify4u.slf4jmock.LoggerMock;

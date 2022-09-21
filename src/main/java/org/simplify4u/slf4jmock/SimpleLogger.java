@@ -17,7 +17,7 @@ package org.simplify4u.slf4jmock;
 
 import org.slf4j.Logger;
 import org.slf4j.Marker;
-import org.slf4j.impl.SimpleLoggerDelegate;
+import org.slf4j.simple.SimpleLoggerDelegate;
 
 /**
  * Access to SLF4J SimpleLogger by own implementation.

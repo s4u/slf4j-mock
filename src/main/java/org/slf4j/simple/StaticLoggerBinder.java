@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.slf4j.impl;
+package org.slf4j.simple;
+
+import org.simplify4u.slf4jmock.LoggerMock;
 
 /**
- * Delegation to SimpleLogger by protected constructor.
- * This class is for internal use only.
+ * Implementation of Logger Binder.
  */
-public class SimpleLoggerDelegate extends SimpleLogger {
+public class StaticLoggerBinder extends LoggerMock {
 
-    private static final long serialVersionUID = -801568980283201312L;
+    private static final StaticLoggerBinder SINGLETON = new StaticLoggerBinder();
 
-    static {
-        SimpleLogger.lazyInit();
-    }
+    @SuppressWarnings("unused")
+    public static final String REQUESTED_API_VERSION = "1.7";
 
-    public SimpleLoggerDelegate(String name) {
-        super(name);
+    public static StaticLoggerBinder getSingleton() {
+        return SINGLETON;
     }
 }
