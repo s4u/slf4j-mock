@@ -19,8 +19,8 @@ package org.simplify4u.slf4jmock;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.IMarkerFactory;
 import org.slf4j.helpers.BasicMarkerFactory;
-import org.slf4j.simple.StaticLoggerBinder;
-import org.slf4j.simple.StaticMDCBinder;
+import org.slf4j.impl.StaticLoggerBinder;
+import org.slf4j.impl.StaticMDCBinder;
 import org.slf4j.spi.MDCAdapter;
 import org.slf4j.spi.SLF4JServiceProvider;
 

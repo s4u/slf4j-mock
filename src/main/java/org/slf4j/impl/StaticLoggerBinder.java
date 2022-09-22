@@ -13,28 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.slf4j.simple;
+package org.slf4j.impl;
 
-import org.simplify4u.slf4jmock.MDCMock;
-import org.slf4j.spi.MDCAdapter;
+import org.simplify4u.slf4jmock.LoggerMock;
 
 /**
- * Implementation for MDC Binder
+ * Implementation of Logger Binder.
  */
-public class StaticMDCBinder extends MDCMock {
+public class StaticLoggerBinder extends LoggerMock {
 
-    static final StaticMDCBinder SINGLETON = new StaticMDCBinder();
+    private static final StaticLoggerBinder SINGLETON = new StaticLoggerBinder();
 
-    /**
-     * Return the singleton of this class.
-     *
-     * @return the StaticMDCBinder singleton
-     */
-    public static StaticMDCBinder getSingleton() {
+    @SuppressWarnings("unused")
+    public static final String REQUESTED_API_VERSION = "1.7";
+
+    public static StaticLoggerBinder getSingleton() {
         return SINGLETON;
-    }
-
-    public MDCAdapter getMDCA() {
-        return getMock();
     }
 }
