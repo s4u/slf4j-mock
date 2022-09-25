@@ -282,4 +282,4 @@ class MyTest {
 More examples
 -------------
 
-Yuo can look at source code [tests](${project.scm.url}/tree/master/src/test/java/org/simplify4u/slf4jmock/test):
+Yuo can look at source code [tests](${project.scm.url}/tree/master/slf4j-mock-tests/src/test/java/org/simplify4u/slf4jmock/test):

@@ -15,7 +15,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -24,9 +25,10 @@
         <version>2.16.0</version>
     </parent>
 
-    <artifactId>slf4j-mock</artifactId>
+    <artifactId>slf4j-mock-parent</artifactId>
     <version>2.2.1-SNAPSHOT</version>
-    <name>SLF4J mock</name>
+    <name>SLF4J mock parent</name>
+    <packaging>pom</packaging>
 
     <description>Library to easy mock request on sl4j-api</description>
     <url>https://www.simplify4u.org/slf4j-mock</url>
@@ -40,7 +42,7 @@
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -60,6 +62,13 @@
         <!-- Add yourself to list after contributions - if wish -->
     </contributors>
 
+    <modules>
+        <module>slf4j-mock-common</module>
+        <module>slf4j-mock-tests</module>
+        <module>slf4j-mock</module>
+        <module>slf4j-mock-coverage-report</module>
+    </modules>
+
     <scm>
         <connection>scm:git:git@github.com:s4u/slf4j-mock.git</connection>
         <developerConnection>${project.scm.connection}</developerConnection>
@@ -75,21 +84,18 @@
     </distributionManagement>
 
     <properties>
-        <slf4j.version>1.7.36</slf4j.version>
+        <slf4j-1.version>1.7.36</slf4j-1.version>
         <junit.version>5.9.1</junit.version>
         <mockito.version>4.6.1</mockito.version>
         <assertj.version>3.23.1</assertj.version>
         <sonar.coverage.exclusions>**/slf4jmock/SimpleLogger.java</sonar.coverage.exclusions>
+        <sonar.projectName>SLF4J mock</sonar.projectName>
+        <sonar.coverage.jacoco.xmlReportPaths>../target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
         <project.build.outputTimestamp>2022-04-20T19:28:53Z</project.build.outputTimestamp>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
@@ -123,39 +129,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-        </dependency>
-
-        <!-- testing -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -185,32 +158,6 @@
                 </dependencies>
             </plugin>
             <plugin>
-                <!-- copy source of SimpleLogger -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.slf4j</groupId>
-                                    <artifactId>slf4j-simple</artifactId>
-                                    <classifier>sources</classifier>
-                                    <version>${slf4j.version}</version>
-                                </artifactItem>
-                            </artifactItems>
-                            <includes>org/slf4j/impl/*.java</includes>
-                            <excludes>**/Static*,**/SimpleLoggerFactory*</excludes>
-                            <outputDirectory>${project.build.directory}/generated-sources/annotations</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
@@ -220,4 +167,35 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>coverage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <executions>
+                            <!-- disable default goals, execute only what need -->
+                            <execution>
+                                <id>default</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>jacoco-prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <includes combine.children="append">
+                                <include>org/slf4j/**</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
