@@ -28,7 +28,18 @@
     <artifactId>slf4j-mock-coverage-report</artifactId>
     <packaging>pom</packaging>
     <name>SLF4J mock coverage report</name>
-    
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- only for dependency coverage -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j-2.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <!-- dependencies for all output modules -->
         <dependency>
@@ -39,6 +50,11 @@
         <dependency>
             <groupId>org.simplify4u</groupId>
             <artifactId>slf4j-mock</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.simplify4u</groupId>
+            <artifactId>slf4j2-mock</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
