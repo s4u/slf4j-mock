@@ -27,7 +27,11 @@ Contributions are welcome!
 How to use
 ----------
 
-First we should add `slf4j-mock` binding as dependency to our project.
+First we should add `slf4j-mock` binding or `slf4j2-mock` provider  as dependency to our project.
+
+### slf4j-mock
+
+For `slf4j-api` **1.7.??** and earlier.
 
 ```
 <dependency>
@@ -38,7 +42,20 @@ First we should add `slf4j-mock` binding as dependency to our project.
 </dependency>
 ```
 
-We must remember that we can have only one `SLF4J` binding on classpath, 
+### slf4j2-mock
+
+For `slf4j-api` **2.0.??** and later.
+
+```
+<dependency>
+    <groupId>org.simplify4u</groupId>
+    <artifactId>slf4j2-mock</artifactId>
+    <version>${project.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
+We must remember that we can have only one `SLF4J` binding or provider on classpath,
 so look for dependencies like `slf4j-simple`, `slf4j-log4j12`, `slf4j-jdk14	` or `slf4j-nop`
 and remove those from project when you want testing logging behavior.
 
