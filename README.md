@@ -20,6 +20,8 @@ Yet another way to testing logging in application which use SLF4J.
 
 Add dependency to your project:
 
+For `SLF4J 1.7.x` 
+
     <dependencies>
         <dependency>
             <groupId>org.simplify4u</groupId>
@@ -29,7 +31,18 @@ Add dependency to your project:
         </dependency>
     <dependencies>
 
-Please remember, that you can only have one `SLF4J` binding on classpath,
+For `SLF4J 2.x`
+
+    <dependencies>
+        <dependency>
+            <groupId>org.simplify4u</groupId>
+            <artifactId>slf4j2-mock</artifactId>
+            <version><!-- check relases page --></version>  
+            <scope>test</scope>        
+        </dependency>
+    <dependencies>
+
+Please remember, that you can only have one `SLF4J` binding or provider on classpath,
 in the most case you must replace `org.slf4j:slf4j-simple` by `org.simplify4u:slf4j-mock`.
 
 Write test:
