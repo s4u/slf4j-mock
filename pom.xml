@@ -89,9 +89,13 @@
         <junit.version>5.9.1</junit.version>
         <mockito.version>4.8.0</mockito.version>
         <assertj.version>3.23.1</assertj.version>
+
         <sonar.coverage.exclusions>**/slf4jmock/SimpleLogger.java</sonar.coverage.exclusions>
         <sonar.projectName>SLF4J mock</sonar.projectName>
         <sonar.coverage.jacoco.xmlReportPaths>../target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+
+        <!-- repo name for GitHub site ribbon -->
+        <github.repo>slf4j-mock</github.repo>
         <project.build.outputTimestamp>2022-09-30T16:06:47Z</project.build.outputTimestamp>
     </properties>
 
@@ -140,8 +144,20 @@
                         <skipLocalStaging>true</skipLocalStaging>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <!-- by default disable scm-publish -->
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-scm-publish-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>scm-publish</id>
+                            <phase>none</phase>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.simplify4u.plugins</groupId>
@@ -177,6 +193,19 @@
                     <excludePackageNames>org.slf4j.simple</excludePackageNames>
                 </configuration>
             </plugin>
+            <plugin>
+                <!-- enable scm-publish only in root module -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-publish-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <inherited>false</inherited>
+                        <id>scm-publish</id>
+                        <phase>site-deploy</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 

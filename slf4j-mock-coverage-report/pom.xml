@@ -27,6 +27,10 @@
     <packaging>pom</packaging>
     <name>SLF4J mock coverage report</name>
 
+    <properties>
+        <maven.site.skip>true</maven.site.skip>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <!-- only for dependency coverage -->
