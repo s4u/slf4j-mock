@@ -87,7 +87,7 @@
         <slf4j-1.version>1.7.36</slf4j-1.version>
         <slf4j-2.version>2.0.2</slf4j-2.version>
         <junit.version>5.9.2</junit.version>
-        <mockito.version>4.11.0</mockito.version>
+        <mockito.version>5.1.0</mockito.version>
         <assertj.version>3.24.2</assertj.version>
 
         <sonar.coverage.exclusions>**/slf4jmock/SimpleLogger.java</sonar.coverage.exclusions>
