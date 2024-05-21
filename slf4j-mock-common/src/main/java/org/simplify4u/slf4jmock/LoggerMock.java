@@ -23,6 +23,7 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.withSettings;
 
@@ -43,7 +44,7 @@ public final class LoggerMock {
         return (Logger) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
                 new Class<?>[]{Logger.class, ProxyMock.class},
                 new MockInvocationHandler(name, () ->
-                        mock(SimpleLogger.class, withSettings().spiedInstance(new SimpleLogger(name)).stubOnly())
+                        mock(SimpleLogger.class, withSettings().spiedInstance(new SimpleLogger(name)).defaultAnswer(CALLS_REAL_METHODS).stubOnly())
                 )
         );
     }
