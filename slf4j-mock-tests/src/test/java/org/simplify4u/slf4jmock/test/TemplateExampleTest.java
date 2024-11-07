@@ -17,6 +17,8 @@
 package org.simplify4u.slf4jmock.test;
 
 
+import java.io.File;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +32,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.simplify4u.slf4jmock.LoggerMock;
 import org.slf4j.Logger;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
@@ -40,12 +43,12 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class TemplateExampleTest {
 
-    private static final String INFO_TEST_MESSAGE = "info log test message";
+    private static final String INFO_TEST_MESSAGE = "info log test message - ExampleTest";
     private static final String WARN_TEST_MESSAGE = "warn log test message";
     private static final String DEBUG_TEST_MESSAGE = "debug log test message";
     private static final String DEBUG_TEST_FORMAT = "Debug: {}";
 
-    static abstract class ExampleTestCommon {
+    abstract static class ExampleTestCommon {
 
         @Mock
         Logger logger;
@@ -92,6 +95,12 @@ class TemplateExampleTest {
             // then
             verify(logger).info(INFO_TEST_MESSAGE);
             verifyNoMoreInteractions(logger);
+
+            File logFile = new File("target/slf4j-simpleLogger.log");
+            if (logFile.exists()) {
+                assertThat(logFile)
+                        .content().doesNotContain(INFO_TEST_MESSAGE);
+            }
         }
 
         @Test
