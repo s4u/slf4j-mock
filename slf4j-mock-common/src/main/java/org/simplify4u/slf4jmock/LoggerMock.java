@@ -23,6 +23,7 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.withSettings;
 
@@ -35,15 +36,16 @@ public final class LoggerMock {
 
     private static final Map<String, Logger> loggers = new HashMap<>();
 
-    private LoggerMock(){
+    private LoggerMock() {
         // Utility classes
     }
 
     private static Logger createNewLoggerProxy(String name) {
         return (Logger) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
-                new Class<?>[]{Logger.class, ProxyMock.class},
+                new Class<?>[] {Logger.class, ProxyMock.class},
                 new MockInvocationHandler(name, () ->
-                        mock(SimpleLogger.class, withSettings().spiedInstance(new SimpleLogger(name)).stubOnly())
+                        mock(SimpleLogger.class, withSettings().spiedInstance(new SimpleLogger(name))
+                                .defaultAnswer(CALLS_REAL_METHODS).stubOnly())
                 )
         );
     }
@@ -66,7 +68,7 @@ public final class LoggerMock {
      * Set Mock for given Logger at current thread.
      *
      * @param klass Logger class
-     * @param mock  Mock to assign to Logger
+     * @param mock Mock to assign to Logger
      */
     public static void setMock(Class<?> klass, Logger mock) {
         setMock(klass.getName(), mock);

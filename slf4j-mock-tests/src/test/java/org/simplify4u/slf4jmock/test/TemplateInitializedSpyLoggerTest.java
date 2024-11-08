@@ -16,6 +16,8 @@
 
 package org.simplify4u.slf4jmock.test;
 
+import java.io.File;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,6 +27,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.simplify4u.slf4jmock.SimpleLogger;
 import org.slf4j.Logger;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 
@@ -45,10 +48,13 @@ class TemplateInitializedSpyLoggerTest {
     @Test
     void testSpy() {
 
-        sut.methodWithLogInfo("Info message");
+        sut.methodWithLogInfo("Info message - InitializedSpyLoggerTest");
 
-        Mockito.verify(logger1).info("Info message");
+        Mockito.verify(logger1).info("Info message - InitializedSpyLoggerTest");
         Mockito.verify(logger2, never()).info(anyString());
+
+        assertThat(new File("target/slf4j-simpleLogger.log"))
+                .content().contains("Info message - InitializedSpyLoggerTest");
     }
 
 }

@@ -16,6 +16,8 @@
 
 package org.simplify4u.slf4jmock.test;
 
+import java.io.File;
+
 import org.junit.jupiter.api.Test;
 import org.slf4j.MDC;
 
@@ -28,8 +30,11 @@ class TemplateWithOutMocksTest {
 
     @Test
     void loggerTest() {
-        assertThatCode(() -> sut.methodWithLogInfo("Some message"))
+        assertThatCode(() -> sut.methodWithLogInfo("Some message - WithOutMocksTest"))
                 .doesNotThrowAnyException();
+
+        assertThat(new File("target/slf4j-simpleLogger.log"))
+                .content().contains("Some message - WithOutMocksTest");
     }
 
     @Test
