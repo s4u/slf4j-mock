@@ -86,7 +86,7 @@
     <properties>
         <slf4j-1.version>1.7.36</slf4j-1.version>
         <slf4j-2.version>2.0.16</slf4j-2.version>
-        <junit.version>5.12.2</junit.version>
+        <junit.version>5.13.0</junit.version>
         <mockito.version>4.11.0</mockito.version>
         <assertj.version>3.27.3</assertj.version>
 
