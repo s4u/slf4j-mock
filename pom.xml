@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.simplify4u</groupId>
         <artifactId>parent</artifactId>
-        <version>3.0.0</version>
+        <version>3.1.0</version>
     </parent>
 
     <artifactId>slf4j-mock-parent</artifactId>
@@ -162,7 +162,7 @@
             <plugin>
                 <groupId>org.simplify4u.plugins</groupId>
                 <artifactId>pgpverify-maven-plugin</artifactId>
-                <version>1.18.2</version>
+                <version>1.19.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -181,7 +181,7 @@
                     <dependency>
                         <groupId>org.simplify4u</groupId>
                         <artifactId>pgp-keys-map</artifactId>
-                        <version>2024.11.03</version>
+                        <version>2026.09.25</version>
                     </dependency>
                 </dependencies>
             </plugin>
